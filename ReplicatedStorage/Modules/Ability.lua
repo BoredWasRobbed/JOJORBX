@@ -24,51 +24,7 @@ end)
 
 Ability.RegisterAbility("Time Stop", function(character, standModel, player)
 	local name = player and player.Name or character.Name
-	local StandEvent = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("StandEvent")
-	
-	if StandEvent then
-		StandEvent:FireAllClients("TimeStopVFX", character.PrimaryPart.Position)
-	end
-
-	local frozenParts = {}
-	local frozenAnimators = {}
-	
-	for _, obj in ipairs(workspace:GetDescendants()) do
-		if not obj:IsDescendantOf(character) and not obj:IsDescendantOf(standModel) then
-			if obj:IsA("BasePart") and not obj.Anchored then
-				frozenParts[obj] = obj.Velocity
-				obj.Anchored = true
-				obj.Velocity = Vector3.new(0, 0, 0)
-				obj.RotVelocity = Vector3.new(0, 0, 0)
-			elseif obj:IsA("Animator") then
-				table.insert(frozenAnimators, obj)
-				for _, track in ipairs(obj:GetPlayingAnimationTracks()) do
-					track:AdjustSpeed(0)
-				end
-			end
-		end
-	end
-	
-	task.wait(5)
-	
-	if StandEvent then
-		StandEvent:FireAllClients("TimeResumeVFX")
-	end
-	
-	for part, vel in pairs(frozenParts) do
-		if part and part.Parent then
-			part.Anchored = false
-			part.Velocity = vel
-		end
-	end
-	
-	for _, animator in ipairs(frozenAnimators) do
-		if animator and animator.Parent then
-			for _, track in ipairs(animator:GetPlayingAnimationTracks()) do
-				track:AdjustSpeed(1)
-			end
-		end
-	end
+	print("Time Stop " .. name)
 end)
 
 function Ability.ExecuteForCharacter(character: Model, abilityName: string, standModel: Model, player: Player?)
