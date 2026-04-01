@@ -2,6 +2,9 @@
 local StateMachine = {}
 StateMachine.__index = StateMachine
 
+StateMachine.Machines = {}
+StateMachine.StateModules = {}
+
 export type State = {
 	Name: string,
 	Category: string,
@@ -9,7 +12,7 @@ export type State = {
 
 	Machine: any,
 
-	OnEnter: ((self: State) -> nil)?,
+	OnEnter: ((self: State, ...any) -> nil)?,
 	OnExit: ((self: State) -> nil)?,
 	OnUpdate: ((self: State, dt: number) -> nil)?,
 	OnRenderStepped: ((self: State, dt: number) -> nil)?,
@@ -20,7 +23,7 @@ export type State = {
 function StateMachine._init()
 	for i, v in pairs(script:GetChildren()) do
 		if v:IsA("ModuleScript") then
-			StateMachine[v.Name] = require(v)
+			StateMachine.StateModules[v.Name] = require(v)
 		end
 	end
 end
@@ -33,7 +36,21 @@ function StateMachine.new(character: Model)
 	self.States = {}
 	self.ActiveStates = {}
 
+	for _, stateModule in pairs(StateMachine.StateModules) do
+		self:RegisterState(stateModule)
+	end
+
+	StateMachine.Machines[character] = self
+
 	return self
+end
+
+function StateMachine.GetMachine(character: Model)
+	return StateMachine.Machines[character]
+end
+
+function StateMachine.RemoveMachine(character: Model)
+	StateMachine.Machines[character] = nil
 end
 
 function StateMachine:RegisterState(stateModule)
@@ -54,7 +71,7 @@ function StateMachine:HasState(name: string)
 	return false
 end
 
-function StateMachine:ChangeState(name: string)
+function StateMachine:ChangeState(name: string, ...)
 	local newState = self.States[name]
 	if not newState then
 		warn("State not found:", name)
@@ -77,7 +94,7 @@ function StateMachine:ChangeState(name: string)
 	self.ActiveStates[category] = newState
 
 	if newState.OnEnter then
-		newState:OnEnter()
+		newState:OnEnter(...)
 	end
 end
 
