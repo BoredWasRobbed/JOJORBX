@@ -13,17 +13,19 @@ function Ability.RegisterAbility(abilityName: string, callback)
 end
 
 Ability.RegisterAbility("ORA!", function(character, standModel, player)
-	local name = player and player.Name or character.Name
-	print("ORA! " .. name)
-end)
+	local activeStand = StandHandler.playerStands[player]
+	if not activeStand then return end
 
-Ability.RegisterAbility("Crossfire Hurricane", function(character, standModel, player)
-	local name = player and player.Name or character.Name
-	print("Crossfire Hurricane " .. name)
+	activeStand:TweenPosition(CFrame.new(0, 0, -3), 0.2)
+
+	task.wait(0.2)
+	
+	activeStand:TweenPosition(CFrame.new(-1.5, 1.5, 2.5), 0.4)
 end)
 
 Ability.RegisterAbility("Time Stop", function(character, standModel, player)
 	local name = player and player.Name or character.Name
+	local activeStand = StandHandler.playerStands[player]
 	print("Time Stop " .. name)
 end)
 
