@@ -11,8 +11,8 @@ local Assets = {
 	},
 	
 	StandAnimations = {
-		BasicStandSummon = "rbxassetid://132173979661212",
-		BasicStandIdle = "rbxassetid://117243129930131",
+		BasicStandSummon = "rbxassetid://126510194598654",
+		BasicStandIdle = "rbxassetid://105343434029961",
 	},
 	
 	Sounds = {
