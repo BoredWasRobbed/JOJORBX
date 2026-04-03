@@ -1,11 +1,13 @@
 -- @ScriptType: LocalScript
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Player = game.Players.LocalPlayer
+local player = game.Players.LocalPlayer
 
-local UIhandler = require(ReplicatedStorage.Modules:WaitForChild("UIHandler"))
+local ClientModules = script.Parent.Parent:WaitForChild("ClientModules")
 
-local PlayerGui = Player:WaitForChild("PlayerGui")
+local UIHandler = require(ClientModules:WaitForChild("UIHandler"))
 
-UIhandler._init(PlayerGui)
-UIhandler.UpdateText("Level", 15, "Level: %d")
+local PlayerGui = player:WaitForChild("PlayerGui")
+
+UIHandler._init(PlayerGui)
+UIHandler.UpdateText("Level", 15, "Level: %d")
 --UIhandler.UpdateText("XP", 15)
