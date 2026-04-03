@@ -2,8 +2,10 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
+local ClientModules = script.Parent.Parent:WaitForChild("ClientModules")
+
 local DataService = require(ReplicatedStorage.DataService).client
-local Keybind = require(ReplicatedStorage.Modules.Keybind)
+local Keybind = require(ClientModules:WaitForChild("Keybind"))
 
 local player = Players.LocalPlayer
 
