@@ -3,13 +3,21 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 local Players = game:GetService("Players")
 
+local ServerModules = ServerScriptService.ServerModules
+local GlobalModules = ReplicatedStorage.Modules
+
+local StateMachine = require(GlobalModules.StateMachine)
+
 local DataService = require(ReplicatedStorage.DataService).server
-local StandHandler = require(ReplicatedStorage.Modules.StandHandler)
-local Keybind = require(ReplicatedStorage.Modules.Keybind)
-local Ability = require(ReplicatedStorage.Modules.Ability)
+local StandHandler = require(ServerModules.StandHandler)
+local Ability = require(ServerModules.Ability)
 
 local StandEvent = ReplicatedStorage.Remotes:WaitForChild("StandEvent")
 local KeyEvent = ReplicatedStorage.Remotes:WaitForChild("KeyEvent")
+
+StateMachine._init()
+
+print(StateMachine)
 
 local function createPlayerStand(player, character, isDataStand)
 	local standModel
